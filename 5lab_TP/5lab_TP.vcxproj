@@ -132,6 +132,7 @@
   <ItemGroup>
     <ClCompile Include="Hash.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Tree.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Hash.h" />
