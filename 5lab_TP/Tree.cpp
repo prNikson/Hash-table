@@ -18,29 +18,24 @@ typename Tree::Node* Tree::create(Node* tmp, const int& val, char* value, const 
     }
     return tmp;
 }
-//Tree::Node* Tree::retNode(Node* root) {
-//    if (root == nullptr)
-//        return;
-//    else
-//        return root;
-//    retNode(root->left);
-//    retNode(root->right);
-//}
+char* Tree::getValue() {
+    if(root)
+        return root->value;
+}
 void Tree::addRoot(const int& val, char* value, const char* key) { // Функция добавления узла дерева в структуру
     root = create(root, val, value, key);
     countChilds++;
 }
-/*template <typename int>
-void Tree<int>::printRoot(Node* root) {
+void Tree::printRoot(Node* root) {
     if (root == nullptr)
         return;
     printRoot(root->left);
-    for (int i = 0; i < root->amount; i++)
-        std::cout << root->value << std::endl;
+    std::cout << root->value << std::endl;
     printRoot(root->right);
-}*/
+}
 void Tree::print() {
     printBinaryTree(root, 0);
+    /*printRoot(root);*/
 }
 void Tree::printBinaryTree(Node* root, int depth) { // Функция вывода дерева на экран
     std::cout << std::endl;
@@ -60,25 +55,20 @@ void Tree::printBinaryTree(Node* root, int depth) { // Функция вывода дерева на 
     // Выводим левое поддерево
     printBinaryTree(root->left, depth + 1);
 }
-Tree::Node* Tree::getRoot() {
-    return root;
-}
-Tree::Node* Tree::getNode(Node* root) {
-    int static count = 0;
-    if (root != nullptr)
-        return root;
-    getNode(root->left);
-    *(allElem + count) = root;
-    count++;
-    getNode(root->right);
+void Tree::getNode(Node* root, int count) {
+    if (root == nullptr) {
+        return;
+    }
+    *(allElem + count++) = root;
+    getNode(root->left, count);
+    getNode(root->right, count);
 }
 int Tree::getCountChilds() {
     return countChilds;
 }
 void Tree::allElements() {
     allElem = new Node * [countChilds];
-    getNode(root);
-
+    getNode(root, 0);
 }
 Tree::Node** Tree::getAllElements() {
     allElements();

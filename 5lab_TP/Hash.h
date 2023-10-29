@@ -9,9 +9,9 @@ private:
 	};
 	NodeStruct** arrNode;
 	const char* Name = "Фамилия Имя Отчество";
-    Tree** arr;
+	Tree** arr;
 	int N = 7;
-	int current, size;
+	int current;
     int currentCountNode;
     int* sumInitials(char*);
 	void retNode(Tree*);
@@ -23,4 +23,5 @@ public:
 	void deleteElement(int, char*, int);
 	void printTable();
 	void reHashTable();
+	void fileInput(char*);
 };
