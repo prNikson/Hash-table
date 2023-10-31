@@ -4,7 +4,7 @@
 Hash::Hash() {
 	current = 0;
 	currentCountNode = 0;
-	arr = new Tree*[N];
+	arr = new Tree * [N];
 	for (int i = 0; i < N; i++) {
 		arr[i] = nullptr;
 	}
@@ -20,14 +20,14 @@ int* Hash::sumInitials(char* name) {
 		ascii = (int)name[i];
 		if (name[i] == ' ' || i == len - 1) {
 			if (i == len - 1) {
-				sum += ascii;
+				sum += ascii % 13;
 			}
 			*(arr_str + count) += sum;
 			sum = 0;
 			count++;
 			continue;
 		}
-		sum += ascii;
+		sum += ascii % 13;
 	}
 	return arr_str;
 }
@@ -84,7 +84,7 @@ void Hash::retNode(Tree* tree) {
 	}
 }
 void Hash::reHashTable() {
-	int ter = 2 * N;
+	int ter = N + 1;
 	Tree** temp = new Tree * [ter];
 	for (int i = 0; i < ter; i++)
 		temp[i] = new Tree;
@@ -134,10 +134,10 @@ void Hash::fileInput(char* file) {
 		ar[i] = new char[50];
 	}
 	int count = 0;
-	for(int i = 0; i < numberOfLines; i++) {
+	for (int i = 0; i < numberOfLines; i++) {
 		fgets(str, 50, f);
 		str = manipulation(str);
-		strcpy(ar[i],str);
+		strcpy(ar[i], str);
 		insertTable(ar[i]);
 	}
 	std::cout << "Data was copied from file" << file << std::endl;

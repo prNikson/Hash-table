@@ -10,7 +10,7 @@ private:
 	NodeStruct** arrNode;
 	const char* Name = "Фамилия Имя Отчество";
 	Tree** arr;
-	int N = 7;
+	int N = 5;
 	int current;
     int currentCountNode;
     int* sumInitials(char*);
