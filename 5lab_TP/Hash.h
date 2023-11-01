@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 #include "Tree.h"
 class Hash {
 private:
@@ -17,6 +18,8 @@ private:
 	void retNode(Tree*);
 	int HashFunc(char*);
 	int getIndex(int, int);
+	int validString(char*, int);
+	int numberLines(FILE*);
 public:
 	Hash();
 	void insertTable(char*);
@@ -24,4 +27,5 @@ public:
 	void printTable();
 	void reHashTable();
 	void fileInput(char*);
+	void keyboardInput();
 };

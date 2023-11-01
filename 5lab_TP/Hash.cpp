@@ -114,32 +114,86 @@ void Hash::deleteElement(int index, char* key, int val) {
 		break;
 	}
 }
+int Hash::numberLines(FILE* file) {
+	int numOfLines = 0;
+	char ch;
+	while (EOF != (ch = getc(file))) {
+		if (ch == '\n')
+			++numOfLines;
+	}
+	rewind(file);
+	return numOfLines + 1;
+}
 char* manipulation(char* str) {
 	int size = strlen(str);
 	str[size - 1] = '\0';
 	return str;
 }
 void Hash::fileInput(char* file) {
-	int numberOfLines = 0;
+	char ch2;
 	FILE* f = fopen(file, "r");
-	int ch;
-	char* str = new char[50];
-	while (EOF != (ch = getc(f))) {
-		if (ch == '\n')
-			++numberOfLines;
+	if (f == NULL) {
+		std::cout << "Error opening file" << std::endl;
+		return;
 	}
-	rewind(f);
+	int numberOfLines = numberLines(f);
 	char** ar = new char* [numberOfLines];
 	for (int i = 0; i < numberOfLines; i++) {
-		ar[i] = new char[50];
+		int count = 0;
+		ch2 = getc(f);
+		while (ch2 != '\n' && ch2 != EOF)
+		{
+			if (!((ch2 >= 65 && ch2 <= 90) || (ch2 >= 97 && ch2 <= 122) || (ch2 == 32))) {
+				std::cout << "Non-valid input from file " << std::endl;
+				return;
+			}
+			count++;
+			ch2 = getc(f);
+		}
+		ar[i] = new char[count + 1];
 	}
+	rewind(f);
 	int count = 0;
 	for (int i = 0; i < numberOfLines; i++) {
-		fgets(str, 50, f);
+		int size = strlen(ar[i]);
+		char* str = new char[size];
+		fgets(str, size, f);
 		str = manipulation(str);
 		strcpy(ar[i], str);
 		insertTable(ar[i]);
 	}
+	fclose(f);
 	std::cout << "Data was copied from file" << file << std::endl;
-
+}
+int Hash::validString(char* name, int size) {
+	for (int i = 0; i < size; i++) {
+		if (!((name[i] >= 65 && name[i] <= 90) || (name[i] >= 97 && name[i] <= 122) && name[i] == 32)) {
+			std::cout << "Non-valid input from file " << name[i] << std::endl;
+			return 0;
+		}
+	}
+}
+void Hash::keyboardInput() {
+	int num;
+	char q[50];
+	std::cout << "Input a count of words:" << std::endl;
+	std::cin >> num;
+	while (std::cin.fail()) {
+		std::cout << "Not number. Try one more" << std::endl;
+		std::cin.clear();
+		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		std::cin >> num;
+	}
+	char** ar = new char* [num];
+	for (int i = 0; i < num; i++) {
+		std::cout << "Type lastname, firstname and patronymic:" << std::endl;
+		std::cin >> q;
+		int size = strlen(q);
+		if (!validString(q, size)) {
+			std::cout << "Non-valid input" << std::endl;
+			return;
+		}
+		ar[i] = new char[size];
+		strcpy(ar[i], q);
+	}
 }
