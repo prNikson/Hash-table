@@ -20,12 +20,14 @@ private:
 	int getIndex(int, int);
 	int validString(char*, int);
 	int numberLines(FILE*);
+	void deleteElement(char*, int, int);
 public:
 	Hash();
 	void insertTable(char*);
-	void deleteElement(int, char*, int);
 	void printTable();
 	void reHashTable();
 	void fileInput(char*);
 	void keyboardInput();
+	void deleteElem(char*);
+	void search(char*);
 };

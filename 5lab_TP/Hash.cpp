@@ -1,5 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
+#include <string>
 #include "Hash.h"
 Hash::Hash() {
 	current = 0;
@@ -54,6 +55,8 @@ void Hash::insertTable(char* value) {
 		reHashTable();
 	int val = HashFunc(value);
 	int index = getIndex(val, N);
+	if (index == 0)
+		std::cout << value << std::endl;
 	if (arr[index] == nullptr)
 		arr[index] = new Tree;
 	arr[index]->addRoot(val, value, Name);
@@ -105,14 +108,17 @@ void Hash::reHashTable() {
 	arrNode = nullptr;
 	N = ter;
 }
-void Hash::deleteElement(int index, char* key, int val) {
-	for (int i = 0; i < N; i++) {
-		if (arr[i]->delNode(key, val))
+void Hash::deleteElement(char* key, int val, int index) {
+	if (arr[index] != nullptr) {
+		if (arr[index]->delNode(key, val)) {
+			if (arr[index]->getCountChilds() == 0) {
+				arr[index] = nullptr;
+			}
 			std::cout << "Deleting is succseefully" << std::endl;
-		else
-			std::cout << "Deleting is not successfully" << std::endl;
-		break;
+			return;
+		}
 	}
+	std::cout << "Deleting is not succseefully" << std::endl;
 }
 int Hash::numberLines(FILE* file) {
 	int numOfLines = 0;
@@ -126,7 +132,8 @@ int Hash::numberLines(FILE* file) {
 }
 char* manipulation(char* str) {
 	int size = strlen(str);
-	str[size - 1] = '\0';
+	if(str[size-1] == '\n')
+		str[size - 1] = '\0';
 	return str;
 }
 void Hash::fileInput(char* file) {
@@ -153,7 +160,6 @@ void Hash::fileInput(char* file) {
 		ar[i] = new char[count + 1];
 	}
 	rewind(f);
-	int count = 0;
 	for (int i = 0; i < numberOfLines; i++) {
 		int size = strlen(ar[i]);
 		char* str = new char[size];
@@ -167,33 +173,45 @@ void Hash::fileInput(char* file) {
 }
 int Hash::validString(char* name, int size) {
 	for (int i = 0; i < size; i++) {
-		if (!((name[i] >= 65 && name[i] <= 90) || (name[i] >= 97 && name[i] <= 122) && name[i] == 32)) {
-			std::cout << "Non-valid input from file " << name[i] << std::endl;
+		if (!((name[i] >= 65 && name[i] <= 90) || (name[i] >= 97 && name[i] <= 122) || name[i] == 32 || name[i] == '\n')) {
 			return 0;
 		}
 	}
+	return 1;
 }
 void Hash::keyboardInput() {
 	int num;
+	char ch;
 	char q[50];
 	std::cout << "Input a count of words:" << std::endl;
 	std::cin >> num;
 	while (std::cin.fail()) {
 		std::cout << "Not number. Try one more" << std::endl;
-		std::cin.clear();
 		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 		std::cin >> num;
 	}
 	char** ar = new char* [num];
+	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 	for (int i = 0; i < num; i++) {
-		std::cout << "Type lastname, firstname and patronymic:" << std::endl;
-		std::cin >> q;
-		int size = strlen(q);
-		if (!validString(q, size)) {
+		std::cout << "Input value" << std::endl;
+		ar[i] = new char[50];
+		std::cin.getline(ar[i], 50);
+		if (!validString(ar[i], strlen(ar[i]))) {
 			std::cout << "Non-valid input" << std::endl;
 			return;
 		}
-		ar[i] = new char[size];
-		strcpy(ar[i], q);
+		insertTable(ar[i]);
+	}
+}
+void Hash::deleteElem(char* name) {
+	int val = HashFunc(name);
+	int index = getIndex(val, N);
+	deleteElement(name, val, index);
+}
+void Hash::search(char* name) {
+	int val = HashFunc(name);
+	int index = getIndex(val, N);
+	if (arr[index] != nullptr) {
+		arr[index]->searchNode(name, val);
 	}
 }
