@@ -79,8 +79,9 @@ int Tree::delNode(char* key, int val) {
 	if (flagDel) {
 		countChilds--;
 		flagDel = 0;
+		return 1;
 	}
-	return 1;
+	return 0;
 }
 Tree::Node* Tree::deleteNode(Node* root, char* key, int val) {
 	if (root == nullptr)
@@ -131,9 +132,9 @@ Tree::Node* Tree::search(Node* root, char* name, int val) {
 		return search(root->right, name, val);
 }
 void Tree::searchNode(char* name, int val) {
-	root = search(root, name, val);
-	if (root)
-		std::cout << "Found:" << std::endl << root->value << std::endl;
+	Node* tmp = search(root, name, val);
+	if (tmp)
+		std::cout << "Found:" << std::endl << tmp->value << std::endl;
 	else
 		std::cout << "Not found" << std::endl;
 }

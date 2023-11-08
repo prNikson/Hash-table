@@ -118,7 +118,7 @@ void Hash::deleteElement(char* key, int val, int index) {
 			return;
 		}
 	}
-	std::cout << "Deleting is not succseefully" << std::endl;
+	std::cout << "Deleting is not succseefully. Check the correctness of input" << std::endl;
 }
 int Hash::numberLines(FILE* file) {
 	int numOfLines = 0;
